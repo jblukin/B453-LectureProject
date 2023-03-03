@@ -9,11 +9,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4328637556863422906}
-  - component: {fileID: 4931433506306318379}
   - component: {fileID: -7065797919476653196}
   - component: {fileID: -4622332733165078756}
+  - component: {fileID: 9029191020598304679}
   m_Layer: 2
-  m_Name: BillionBasePrefab
+  m_Name: BillionBasePrefabYellow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -34,22 +34,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &4931433506306318379
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4546357304272782279}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ea53368a0ce7dbc409c0f14776e342b9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _billionPrefab: {fileID: 7250649132669018430, guid: af523cba735350e4fb7ed76998f57eee, type: 3}
-  _flagPrefabs:
-  - {fileID: 2382545778203470449, guid: 07399fe9d33525b41ba011a410aafbc8, type: 3}
-  - {fileID: 2382545778203470449, guid: 57da724e666ee9149b24b9a272aa9dc9, type: 3}
 --- !u!58 &-7065797919476653196
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -107,7 +91,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 1
-  m_Sprite: {fileID: 21300000, guid: e4d092da783dd964cb13dfc389117803, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 02ef919f408945843ab98248c25765d1, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -118,3 +102,17 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &9029191020598304679
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4546357304272782279}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dd84ffbce76aaf341ae6c6e3cc990fa2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _billionPrefab: {fileID: 7250649132669018430, guid: af523cba735350e4fb7ed76998f57eee, type: 3}
+  _flagPrefabs: []

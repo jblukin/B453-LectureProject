@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BillionBase : MonoBehaviour
+public class BillionBaseGreen : MonoBehaviour
 {
 
     [SerializeField] private GameObject _billionPrefab;
@@ -74,7 +74,6 @@ public class BillionBase : MonoBehaviour
             GameObject billion = Instantiate(_billionPrefab, spawnPos, Quaternion.identity);
 
             billion.GetComponentInChildren<SpriteRenderer>().color = _color;
-
         }
 
     }
@@ -155,7 +154,7 @@ public class BillionBase : MonoBehaviour
 
                 //Debug.Log("Ray hit!");
 
-                if(hit.collider.gameObject.tag == "BlueFlag") {
+                if(hit.collider.gameObject.tag == "GreenFlag") {
 
                     _currentFlag = hit.collider.gameObject;
 

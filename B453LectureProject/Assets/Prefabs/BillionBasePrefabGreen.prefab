@@ -9,11 +9,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4328637556863422906}
-  - component: {fileID: 4931433506306318379}
+  - component: {fileID: 930764007414296641}
   - component: {fileID: -7065797919476653196}
   - component: {fileID: -4622332733165078756}
   m_Layer: 2
-  m_Name: BillionBasePrefab
+  m_Name: BillionBasePrefabGreen
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -34,7 +34,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &4931433506306318379
+--- !u!114 &930764007414296641
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -43,7 +43,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 4546357304272782279}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ea53368a0ce7dbc409c0f14776e342b9, type: 3}
+  m_Script: {fileID: 11500000, guid: dcd32437aeef8d74a8a3c013a2c850df, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _billionPrefab: {fileID: 7250649132669018430, guid: af523cba735350e4fb7ed76998f57eee, type: 3}
@@ -107,7 +107,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 1
-  m_Sprite: {fileID: 21300000, guid: e4d092da783dd964cb13dfc389117803, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 7bc4056ba0ce90f4babb17e5359dd94e, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0

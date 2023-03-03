@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BillionBase : MonoBehaviour
+public class BillionBaseRed : MonoBehaviour
 {
 
     [SerializeField] private GameObject _billionPrefab;
@@ -31,17 +31,25 @@ public class BillionBase : MonoBehaviour
 
             _color = Color.blue;
 
-        }
+        } else if(this.gameObject.name == "YellowBase") {
+
+            _color = Color.yellow;
+
+        } else if(this.gameObject.name == "RedBase") {
+
+            _color = Color.red;
+
+        } 
         
     }
 
     // Update is called once per frame
     void Update()
     {
-        spawnInitialFlags();
+        // spawnInitialFlags();
 
-        if(_canMoveFlag)
-            MoveFlag();
+        // if(_canMoveFlag)
+        //     MoveFlag();
 
     }
 
@@ -155,7 +163,7 @@ public class BillionBase : MonoBehaviour
 
                 //Debug.Log("Ray hit!");
 
-                if(hit.collider.gameObject.tag == "BlueFlag") {
+                if(hit.collider.gameObject.tag == "GreenFlag") {
 
                     _currentFlag = hit.collider.gameObject;
 
