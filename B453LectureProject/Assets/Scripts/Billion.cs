@@ -8,10 +8,20 @@ public class Billion : MonoBehaviour
     // Start is called before the first frame update
 
     GameObject _homeBase;
+
     bool _nearFlag = false;
+
     [SerializeField] int _maxHealth = 5;
 
     int _health;
+    [SerializeField] private GameObject _gunBarrelRotationPoint;
+
+    [SerializeField] private GameObject _gunBarrelEnd;
+
+    [SerializeField] private float _billionDetectionRange = 10f;
+
+    private Vector2 fireDir;
+
 
     void Start()
     {
@@ -36,6 +46,8 @@ public class Billion : MonoBehaviour
         Move();
 
         TakeDamage();
+
+        SelectEnemyTarget();
 
     }
 
@@ -116,6 +128,40 @@ public class Billion : MonoBehaviour
 
         if(!_nearFlag && flagToGOTO != null && 0.25 <= (Vector2.Distance(this.transform.position, flagToGOTO.position) - 0.5))
             transform.position = Vector2.MoveTowards(transform.position, flagToGOTO.position, Time.deltaTime*3);
+
+    }
+
+    void SelectEnemyTarget() {
+
+        Vector2 targetLocation = GetClosestBillion();
+
+        fireDir = targetLocation - (Vector2)this.gameObject.transform.position;
+
+        _gunBarrelRotationPoint.transform.up = fireDir;
+
+    }
+
+    Vector2 GetClosestBillion() {
+
+        Collider2D[] colliders = Physics2D.OverlapCircleAll(this.transform.position, _billionDetectionRange);
+
+        Vector2 closestBillionLoc = Vector2.negativeInfinity;
+
+        foreach (Collider2D billion in colliders) {
+
+            if(billion.gameObject.tag == "Billion" && billion.gameObject.GetComponent<SpriteRenderer>().color != this.gameObject.GetComponent<SpriteRenderer>().color) {
+                Vector2 currentBillionLoc = billion.transform.position;
+
+                if(closestBillionLoc == Vector2.negativeInfinity)
+                    closestBillionLoc = currentBillionLoc;
+                else if (Vector2.Distance(currentBillionLoc, this.gameObject.transform.position) < Vector2.Distance(closestBillionLoc, this.gameObject.transform.position))
+                    closestBillionLoc = currentBillionLoc;
+
+            }
+
+        }
+
+        return closestBillionLoc;
 
     }
 
