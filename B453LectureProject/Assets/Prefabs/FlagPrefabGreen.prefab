@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: -9185818650919998032}
   m_Layer: 0
   m_Name: FlagPrefabGreen
-  m_TagString: GreenFlag
+  m_TagString: Flag
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

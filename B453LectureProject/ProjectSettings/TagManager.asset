@@ -4,11 +4,11 @@
 TagManager:
   serializedVersion: 2
   tags:
-  - GreenFlag
-  - BlueFlag
   - Billion
-  - RedFlag
-  - YellowFlag
+  - Wall
+  - Bullet
+  - Flag
+  - Base
   layers:
   - Default
   - TransparentFX
