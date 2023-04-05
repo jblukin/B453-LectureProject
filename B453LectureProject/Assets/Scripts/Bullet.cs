@@ -12,7 +12,9 @@ public class Bullet : MonoBehaviour
 
     private Color _color;
 
-    private int _firingObject;
+    private GameObject _firingObject;
+
+    private BulletData _myData;
 
     // Start is called before the first frame update
     void Start()
@@ -41,23 +43,26 @@ public class Bullet : MonoBehaviour
 
         _firingObject = bD.firingObject;
 
+        _myData = bD;
+
     }
 
     void OnTriggerEnter2D(Collider2D collider) {
 
         if(collider.gameObject.tag == "Billion" && collider.gameObject.GetComponent<SpriteRenderer>().color != _color) {
 
-            if(_firingObject == 0)
-                collider.gameObject.SendMessage("TakeBulletDamage", 3);
-                
-            else if(_firingObject == 1)
-                collider.gameObject.SendMessage("TakeBulletDamage", 1);
+            collider.gameObject.SendMessage("TakeBulletDamage", _myData);
 
             Destroy(gameObject);
 
-        }
+        } else if(collider.gameObject.CompareTag("Base") && collider.gameObject.transform.GetChild(0).GetComponent<SpriteRenderer>().color != _color) {
+
+            collider.gameObject.SendMessage("TakeDamage", _myData);
             
-        
+            Destroy(gameObject);
+
+        }
+
     }
 
 }

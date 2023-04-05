@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class BillionBaseImproved : MonoBehaviour
 {
@@ -26,11 +27,25 @@ public class BillionBaseImproved : MonoBehaviour
 
     [SerializeField] private float _barrelRotationSpeed = 0.1f;
 
+    private float _health;
+
+    private float _maxHealth = 50.0f;
+
+    private float _XPThreshold = 10.0f;
+
+    private float _currentXP = 0.0f;
+
+    [SerializeField] private GameObject _radialHealthBar;
+
+    [SerializeField] private GameObject _radialXPBar;
+
     // Start is called before the first frame update
     void Start()
     {
 
         _baseColor = gameObject.transform.GetChild(0).GetComponent<SpriteRenderer>().color;
+
+        _health = _maxHealth;
 
         InvokeRepeating("SpawnBillion", 0.0f, 2.0f);
 
@@ -196,7 +211,7 @@ public class BillionBaseImproved : MonoBehaviour
 
             currBul.transform.localScale+=new Vector3(0.15f, 0.15f, 0f);
 
-            currBul.SendMessage("SetTarget", new BulletData((targetLocation - (Vector2)transform.position).normalized * 50f, _baseColor, 0));
+            currBul.SendMessage("SetTarget", new BulletData((targetLocation - (Vector2)transform.position).normalized * 50f, _baseColor, 3,this.gameObject));
 
         }
 
@@ -239,19 +254,45 @@ public class BillionBaseImproved : MonoBehaviour
 
     }
 
+    void TakeDamage(BulletData bD) {
+
+        _health-=bD.damageAmount;
+
+        _radialHealthBar.GetComponent<Image>().fillAmount = (float)(_health / _maxHealth);
+
+        if(_health <= 0)
+            Destroy(this.gameObject);
+
+    }
+
+    void GainXP(int xpAmount) {
+
+        _currentXP+=xpAmount;
+
+        if(_currentXP >= _XPThreshold)
+            _currentXP = 0.0f;
+            //Add rank-up
+
+        _radialXPBar.GetComponent<Image>().fillAmount = (float)(_currentXP / _XPThreshold);
+
+    }
+
 }
 
 public class BulletData {
 
     public Vector2 targetLoc;
     public Color color;
-    public int firingObject;
+    public int damageAmount;
+    public GameObject firingObject;
 
-    public BulletData(Vector2 target, Color c, int objectShooting) {
+    public BulletData(Vector2 target, Color c, int damage, GameObject objectShooting) {
 
         targetLoc = target;
 
         color = c;
+
+        damageAmount = damage;
 
         firingObject = objectShooting;
 

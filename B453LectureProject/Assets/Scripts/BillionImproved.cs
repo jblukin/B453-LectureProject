@@ -41,7 +41,7 @@ public class BillionImproved : MonoBehaviour
 
         AimBarrel();
 
-        TakeDamage();
+        //TakeDamage();
 
 
     }
@@ -52,44 +52,44 @@ public class BillionImproved : MonoBehaviour
     
     }
 
-    void TakeDamage() {
+    // void TakeDamage() {
 
-        if(Input.GetKeyDown(KeyCode.Mouse0)) {
+    //     if(Input.GetKeyDown(KeyCode.Mouse0)) {
 
-            //Debug.Log("Ray fired!");
+    //         //Debug.Log("Ray fired!");
 
-            RaycastHit2D hit;
-            Vector3 rayOrigin = Camera.main.ScreenToWorldPoint(Input.mousePosition) + new Vector3(0f, 0f, 15f);
+    //         RaycastHit2D hit;
+    //         Vector3 rayOrigin = Camera.main.ScreenToWorldPoint(Input.mousePosition) + new Vector3(0f, 0f, 15f);
 
-            if(hit = Physics2D.Raycast(rayOrigin, Vector2.zero)) {
+    //         if(hit = Physics2D.Raycast(rayOrigin, Vector2.zero)) {
 
-                //Debug.Log("Ray hit!");
+    //             //Debug.Log("Ray hit!");
 
-                if(hit.collider.gameObject == this.gameObject) {
+    //             if(hit.collider.gameObject == this.gameObject) {
 
-                    this._health--;
+    //                 this._health--;
 
-                    ResizeHPIndicator();
+    //                 ResizeHPIndicator();
 
-                    //Debug.Log("Flag hit!");
+    //                 //Debug.Log("Flag hit!");
 
-                }
+    //             }
 
-            }
+    //         }
 
-        }
+    //     }
+
+    // }
+
+    void TakeBulletDamage(BulletData bD) {
+
+        _health -= bD.damageAmount;
+
+        ResizeHPIndicator(bD.firingObject);
 
     }
 
-    void TakeBulletDamage(int amount) {
-
-        _health -= amount;
-
-        ResizeHPIndicator();
-
-    }
-
-    void ResizeHPIndicator() {
+    void ResizeHPIndicator(GameObject firingObject) {
 
         Transform resizeObj = transform.Find("HPIndicator");
 
@@ -99,8 +99,22 @@ public class BillionImproved : MonoBehaviour
 
         resizeObj.parent = this.transform;
 
-        if(_health <= 0)
+        if(_health <= 0) {
+
+            if(firingObject.CompareTag("Base"))
+                firingObject.SendMessage("GainXP", 1);
+            else if(firingObject.CompareTag("Billion"))
+                foreach (GameObject billionBase in GameObject.FindGameObjectsWithTag("Base"))
+                    if(firingObject.GetComponent<SpriteRenderer>().color == billionBase.transform.GetChild(0).GetComponent<SpriteRenderer>().color) {
+
+                        billionBase.SendMessage("GainXP", 1);
+                        break;
+
+                    }
+
             Destroy(this.gameObject);
+
+        }
 
     }
 
@@ -185,7 +199,7 @@ public class BillionImproved : MonoBehaviour
 
             currBul.transform.localScale-=new Vector3(0.05f, 0.05f, 0f);
 
-            currBul.SendMessage("SetTarget", new BulletData((targetLocation - (Vector2)transform.position).normalized * 50f, this.gameObject.GetComponent<SpriteRenderer>().color, 1));
+            currBul.SendMessage("SetTarget", new BulletData((targetLocation - (Vector2)transform.position).normalized * 50f, this.gameObject.GetComponent<SpriteRenderer>().color, 1, this.gameObject));
 
         }
 
@@ -213,7 +227,8 @@ public class BillionImproved : MonoBehaviour
 
         foreach (Collider2D billion in colliders) {
 
-            if(billion.gameObject.tag == "Billion" && billion.gameObject.GetComponent<SpriteRenderer>().color != this.gameObject.GetComponent<SpriteRenderer>().color) {
+            if((billion.gameObject.tag == "Billion" && billion.gameObject.GetComponent<SpriteRenderer>().color != this.gameObject.GetComponent<SpriteRenderer>().color) ||
+                (billion.gameObject.tag == "Base" && billion.gameObject.transform.GetChild(0).GetComponent<SpriteRenderer>().color != this.gameObject.GetComponent<SpriteRenderer>().color)) {
                 Vector2 currentBillionLoc = billion.transform.position;
 
                 if(closestBillionLoc == (Vector2)transform.position)
