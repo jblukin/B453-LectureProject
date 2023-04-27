@@ -115,3 +115,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _maxDistance: 10
+  _explosionDuration: 1
+  _explosionRadius: 1.25

@@ -9,6 +9,7 @@ TagManager:
   - Bullet
   - Flag
   - Base
+  - PowerUp
   layers:
   - Default
   - TransparentFX

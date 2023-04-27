@@ -1,7 +1,7 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class BillionBaseImproved : MonoBehaviour
 {
@@ -23,9 +23,9 @@ public class BillionBaseImproved : MonoBehaviour
 
     private int _flagsPlaced = 0;
 
-    [SerializeField] private float _baseDetectionRange = 20.0f;
+    [SerializeField] private float _baseDetectionRange;
 
-    [SerializeField] private float _barrelRotationSpeed = 0.1f;
+    [SerializeField] private float _barrelRotationSpeed;
 
     private float _health;
 
@@ -35,9 +35,13 @@ public class BillionBaseImproved : MonoBehaviour
 
     private float _currentXP = 0.0f;
 
+    private int _rank;
+
     [SerializeField] private GameObject _radialHealthBar;
 
     [SerializeField] private GameObject _radialXPBar;
+
+    private bool _poweredUp = false;
 
     // Start is called before the first frame update
     void Start()
@@ -46,6 +50,10 @@ public class BillionBaseImproved : MonoBehaviour
         _baseColor = gameObject.transform.GetChild(0).GetComponent<SpriteRenderer>().color;
 
         _health = _maxHealth;
+
+        _rank = 1;
+
+        transform.Find("RankUI/RankText").GetComponent<TextMeshProUGUI>().text = "" + _rank;
 
         InvokeRepeating("SpawnBillion", 0.0f, 2.0f);
 
@@ -56,12 +64,14 @@ public class BillionBaseImproved : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+
         spawnInitialFlags();
 
         AimBarrel();
 
         if(_canMoveFlag)
             MoveFlag();
+
     }
 
     void SpawnBillion() 
@@ -92,9 +102,13 @@ public class BillionBaseImproved : MonoBehaviour
 
             GameObject billion = Instantiate(_billionPrefab, spawnPos, Quaternion.identity);
 
-            billion.GetComponentInChildren<SpriteRenderer>().color = _baseColor;
+            billion.transform.Find("HPIndicator").GetComponent<SpriteRenderer>().color = _baseColor;
+            billion.transform.Find("Color").GetComponent<SpriteRenderer>().color = _baseColor;
 
             billion.SendMessage("SetHomeBase", this.gameObject);
+
+            if(_poweredUp)
+                billion.GetComponent<BillionImproved>().SetPoweredUp(true);
 
         }
 
@@ -211,7 +225,7 @@ public class BillionBaseImproved : MonoBehaviour
 
             currBul.transform.localScale+=new Vector3(0.15f, 0.15f, 0f);
 
-            currBul.SendMessage("SetTarget", new BulletData((targetLocation - (Vector2)transform.position).normalized * 50f, _baseColor, 3,this.gameObject));
+            currBul.SendMessage("SetTarget", new BulletData((targetLocation - (Vector2)transform.position).normalized * 50f, _baseColor, 3, false, this.gameObject));
 
         }
 
@@ -236,7 +250,7 @@ public class BillionBaseImproved : MonoBehaviour
 
         foreach (Collider2D billion in colliders) {
 
-            if(billion.gameObject.CompareTag("Billion") && billion.gameObject.GetComponent<SpriteRenderer>().color != _baseColor) {
+            if(billion.gameObject.CompareTag("Billion") && billion.gameObject.transform.Find("HPIndicator").GetComponent<SpriteRenderer>().color != _baseColor) {
 
                 Vector2 currentBillionLoc = billion.transform.position;
 
@@ -269,11 +283,35 @@ public class BillionBaseImproved : MonoBehaviour
 
         _currentXP+=xpAmount;
 
-        if(_currentXP >= _XPThreshold)
-            _currentXP = 0.0f;
-            //Add rank-up
+        if(_currentXP >= _XPThreshold) {
+            
+            _currentXP = _currentXP%_XPThreshold;
+
+            _rank++;
+
+            transform.Find("RankUI/RankText").GetComponent<TextMeshProUGUI>().text = "" + _rank;
+
+            _XPThreshold = Mathf.CeilToInt(_XPThreshold*1.2f);
+
+        }
 
         _radialXPBar.GetComponent<Image>().fillAmount = (float)(_currentXP / _XPThreshold);
+
+    }
+
+    IEnumerator CollectPowerUp() {
+
+        _poweredUp = true;
+        yield return new WaitForSeconds(15.0f);
+        _poweredUp = false;
+
+
+    }
+
+    public int GetRank() {
+
+
+        return _rank;
 
     }
 
@@ -283,16 +321,19 @@ public class BulletData {
 
     public Vector2 targetLoc;
     public Color color;
-    public int damageAmount;
+    public float damageAmount;
+    public bool isRocket;
     public GameObject firingObject;
 
-    public BulletData(Vector2 target, Color c, int damage, GameObject objectShooting) {
+    public BulletData(Vector2 target, Color c, float damage, bool rocket, GameObject objectShooting) {
 
         targetLoc = target;
 
         color = c;
 
         damageAmount = damage;
+
+        isRocket = rocket;
 
         firingObject = objectShooting;
 
